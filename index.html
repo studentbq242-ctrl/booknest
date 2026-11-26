@@ -15,6 +15,14 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="logo">📚 BookNest</a>
+
+      <!-- 34. Гамбургер батырмасы (CSS макеті, JS кейін қосылады) -->
+      <button type="button" class="menu-toggle" aria-label="Мәзірді ашу" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
       <nav aria-label="Негізгі навигация">
         <ul class="nav-list">
           <li><a href="index.html" aria-current="page">Басты бет</a></li>
@@ -30,7 +38,7 @@
     <!-- Hero бөлімі -->
     <section class="hero">
       <div class="container hero-content">
-        <h1>Кітап әлеміне қош келдіңіз!</h1>
+        <h1 class="hero-title">Кітап әлеміне қош келдіңіз!</h1>
         <p>Үздік туындыларды таңдаңыз, оқырмандар клубына қосылыңыз және біліміңізді шыңдаңыз.</p>
         <a href="books.html" class="btn">Каталогқа өту</a>
       </div>
@@ -38,38 +46,52 @@
 
     <!-- Танымал кітаптар -->
     <section class="section container">
-      <h2>Танымал кітаптар</h2>
+      <h2 class="section-title">Танымал кітаптар</h2>
       <div class="cards-grid">
+
+        <!-- 38 & 39. «Жаңа» белгісі + <picture> және srcset -->
         <article class="card">
-          <img src="images/book1.jpg" alt="Абай жолы кітабының мұқабасы" width="250" height="350">
+          <span class="badge-new">Жаңа</span>
+          <picture class="book-media">
+            <source media="(min-width: 600px)" srcset="images/book1.jpg 1x, images/book1.jpg 2x">
+            <img src="images/book1.jpg" alt="Абай жолы кітабының мұқабасы" width="250" height="350">
+          </picture>
           <h3>Абай жолы</h3>
           <p class="author">Мұхтар Әуезов</p>
+          <p class="rating" data-rating="5" aria-label="Рейтингі 5-тен 5"></p>
           <p class="price">4 500 ₸</p>
           <a href="books.html" class="btn-outline">Толығырақ</a>
         </article>
 
         <article class="card">
-          <img src="images/book2.jpg" alt="Атомдық әдеттер кітабының мұқабасы" width="250" height="350">
+          <picture class="book-media">
+            <img src="images/book2.jpg" alt="Атомдық әдеттер кітабының мұқабасы" width="250" height="350">
+          </picture>
           <h3>Атомдық әдеттер</h3>
           <p class="author">Джеймс Клир</p>
+          <p class="rating" data-rating="4" aria-label="Рейтингі 5-тен 4"></p>
           <p class="price">5 200 ₸</p>
           <a href="books.html" class="btn-outline">Толығырақ</a>
         </article>
 
         <article class="card">
-          <img src="images/book3.jpg" alt="Көшпенділер кітабының мұқабасы" width="250" height="350">
+          <picture class="book-media">
+            <img src="images/book3.jpg" alt="Көшпенділер кітабының мұқабасы" width="250" height="350">
+          </picture>
           <h3>Көшпенділер</h3>
           <p class="author">Ілияс Есенберлин</p>
+          <p class="rating" data-rating="5" aria-label="Рейтингі 5-тен 5"></p>
           <p class="price">4 800 ₸</p>
           <a href="books.html" class="btn-outline">Толығырақ</a>
         </article>
+
       </div>
     </section>
 
     <!-- Неге біз? -->
     <section class="section bg-light">
       <div class="container">
-        <h2>Неге бізді таңдайды?</h2>
+        <h2 class="section-title">Неге бізді таңдайды?</h2>
         <ul class="features-list">
           <li><strong>Түпнұсқа кітаптар:</strong> Тек ресми баспалардан алынған сапалы өнімдер.</li>
           <li><strong>Жылдам жеткізу:</strong> Қазақстанның барлық қалаларына 2–4 күнде жеткіземіз.</li>
@@ -99,7 +121,7 @@
         <h3>Байланыс</h3>
         <p>Email: info@booknest.kz</p>
         <p>
-          <a href="#">Instagram</a> | 
+          <a href="#">Instagram</a> |
           <a href="#">Telegram</a>
         </p>
       </div>

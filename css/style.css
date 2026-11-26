@@ -5,7 +5,7 @@
   padding: 0;
 }
 
-/* 16. Түс айнымалылары және қаріптер */
+/* 16 & 36. Түс айнымалылары және .dark тақырыбы */
 :root {
   --primary: #2c5e4f;
   --primary-dark: #1e4237;
@@ -16,17 +16,34 @@
   --text-muted: #6b7280;
   --white: #ffffff;
   --border: #e5e7eb;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.12);
   --font-heading: 'Playfair Display', Georgia, serif;
   --font-body: 'Inter', sans-serif;
 }
 
-/* 17. Типографика */
+.dark {
+  --primary: #3b826d;
+  --primary-dark: #12241e;
+  --accent: #f59e0b;
+  --bg-body: #111827;
+  --bg-light: #1f2937;
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --white: #182232;
+  --border: #374151;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 10px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* 17, 33 & 35. Mobile-first негізгі стиль және clamp() қаріптері */
 body {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
   line-height: 1.6;
   color: var(--text-main);
   background-color: var(--bg-body);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 h1, h2, h3 {
@@ -37,56 +54,121 @@ h1, h2, h3 {
   color: var(--primary-dark);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.25rem; }
+.dark h1, .dark h2, .dark h3 {
+  color: var(--text-main);
+}
+
+h1 { font-size: clamp(1.75rem, 1.3rem + 2vw, 2.75rem); }
+h2 { font-size: clamp(1.35rem, 1.1rem + 1vw, 2rem); }
+h3 { font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem); }
 p { margin-bottom: 1rem; }
 
 .container {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 1rem;
 }
 
-.section { padding: 4rem 0; }
+.section { padding: 3rem 0; }
 .bg-light { background-color: var(--bg-light); }
 
-/* 18 & 26. Sticky Header және Навигация */
+/* 40. Тақырып астындағы ::after сызығы */
+.section-title {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60%;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--accent);
+}
+
+/* 26, 31 & 34. Header (Flexbox) + Гамбургер макеті (Mobile-first) */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
   background-color: var(--white);
   border-bottom: 1px solid var(--border);
-  padding: 1rem 0;
+  padding: 0.85rem 0;
 }
 
 .header-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .logo {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
   font-weight: 700;
   color: var(--primary);
   text-decoration: none;
+  z-index: 110;
 }
 
+/* Телефонда гамбургер батырмасы көрінеді */
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 110;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-main);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Телефонда мәзір бастапқыда жасырын (CSS макеті) */
 .nav-list {
   list-style: none;
+  display: none;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--white);
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  z-index: 105;
+}
+
+.nav-list.is-open {
   display: flex;
-  gap: 1.5rem;
 }
 
 .nav-list a {
   text-decoration: none;
   color: var(--text-main);
   font-weight: 500;
-  padding-bottom: 0.25rem;
-  transition: color 0.2s;
+  padding-bottom: 0.2rem;
+  transition: color 0.2s ease;
 }
 
 .nav-list a:hover {
@@ -98,48 +180,61 @@ p { margin-bottom: 1rem; }
   border-bottom: 2px solid var(--primary);
 }
 
-/* 19. Hero бөлімі */
+/* 19 & 37. Hero бөлімі + @keyframes анимация */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/hero-bg.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.62)), url('../images/hero-bg.jpg');
   background-size: cover;
   background-position: center;
-  background-color: var(--primary-dark); /* Сурет болмаса көрінетін фон */
-  color: var(--white);
-  padding: 6rem 0;
+  background-color: var(--primary-dark);
+  color: #ffffff;
+  padding: 4.5rem 0;
   text-align: center;
 }
 
-.hero h1 {
-  color: var(--white);
-  margin-bottom: 1rem;
+.hero-title {
+  color: #ffffff;
+  animation: heroFadeUp 0.8s ease-out both;
 }
 
 .hero p {
   max-width: 600px;
-  margin: 0 auto 2rem;
-  font-size: 1.125rem;
+  margin: 0 auto 1.75rem;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+  animation: heroFadeUp 0.8s ease-out 0.15s both;
 }
 
-/* 20. Батырмалар */
+/* 20 & 37. Батырмалар және transition */
 .btn, .btn-outline {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.4rem;
   border-radius: 6px;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   border: 2px solid var(--primary);
 }
 
 .btn {
   background-color: var(--primary);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .btn:hover {
   background-color: var(--primary-dark);
   border-color: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
 .btn-outline {
@@ -149,22 +244,24 @@ p { margin-bottom: 1rem; }
 
 .btn-outline:hover {
   background-color: var(--primary);
-  color: var(--white);
+  color: #ffffff;
+  transform: translateY(-2px);
 }
 
-/* 21 & 22. Кітап карточкалары */
+/* 32, 37, 38, 39 & 40. Кітап карточкалары (Grid), «Жаңа» белгісі, aspect-ratio, ::before рейтинг */
 .cards-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
 }
 
 .card {
-  flex: 1 1 280px;
+  position: relative;
+  z-index: 1;
   background: var(--white);
   padding: 1.25rem;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
@@ -172,26 +269,75 @@ p { margin-bottom: 1rem; }
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-hover);
+  z-index: 2;
 }
 
-.card img {
+/* 38. position: absolute арқылы «Жаңа» белгісі */
+.badge-new {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 5;
+  background-color: var(--accent);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* 39. aspect-ratio және object-fit */
+.book-media {
+  display: block;
   width: 100%;
-  height: 280px;
-  object-fit: cover;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
   border-radius: 6px;
   margin-bottom: 1rem;
-  background-color: #e5e7eb;
+  background-color: var(--bg-light);
 }
 
-.card .author { color: var(--text-muted); font-size: 0.9rem; }
-.card .price { font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-bottom: 1rem; }
+.book-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card .author {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+/* 40. ::before арқылы жұлдызшалық рейтинг */
+.rating {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+
+.rating[data-rating="5"]::before { content: "★★★★★"; }
+.rating[data-rating="4"]::before { content: "★★★★☆"; }
+.rating[data-rating="3"]::before { content: "★★★☆☆"; }
+
+.card .price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
 
 /* Тізімдер */
 .features-list, .steps-list { padding-left: 1.5rem; }
 .features-list li, .steps-list li { margin-bottom: 0.75rem; }
 
 .rules-list dt { font-weight: 700; color: var(--primary-dark); margin-top: 1rem; }
+.dark .rules-list dt { color: var(--text-main); }
 .rules-list dd { margin-left: 1rem; color: var(--text-muted); }
 
 /* 23. Кесте стилі */
@@ -200,7 +346,7 @@ p { margin-bottom: 1rem; }
   border-collapse: collapse;
   background: var(--white);
   margin-top: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow);
 }
 
 .books-table th, .books-table td {
@@ -211,7 +357,7 @@ p { margin-bottom: 1rem; }
 
 .books-table thead {
   background-color: var(--primary);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .books-table tbody tr:nth-child(even) {
@@ -224,7 +370,7 @@ p { margin-bottom: 1rem; }
   background: var(--white);
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow);
 }
 
 .form-group { margin-bottom: 1.25rem; }
@@ -235,10 +381,12 @@ p { margin-bottom: 1rem; }
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-family: inherit;
   font-size: 1rem;
+  background-color: var(--bg-body);
+  color: var(--text-main);
 }
 
 .form-group input:focus,
@@ -254,31 +402,60 @@ p { margin-bottom: 1rem; }
   border-color: #dc2626;
 }
 
-/* 25. Footer (3 баған) */
+/* 25. Footer */
 .site-footer {
   background-color: var(--primary-dark);
-  color: var(--white);
+  color: #ffffff;
   padding-top: 3rem;
   margin-top: 4rem;
 }
 
 .footer-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 2rem;
   padding-bottom: 2rem;
 }
 
-.footer-grid > div { flex: 1 1 250px; }
-.site-footer h3 { color: var(--white); }
+.site-footer h3 { color: #ffffff; }
 .site-footer ul { list-style: none; }
 .site-footer a { color: #d1d5db; text-decoration: none; }
-.site-footer a:hover { color: var(--white); text-decoration: underline; }
+.site-footer a:hover { color: #ffffff; text-decoration: underline; }
 
 .footer-bottom {
   text-align: center;
   padding: 1.25rem;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 0.9rem;
-  color: #9ca3af;
+  color: #cbd5e1;
+}
+
+/* 33. Media queries: 600px, 900px, 1200px */
+@media (min-width: 600px) {
+  .container { padding: 0 1.5rem; }
+  .section { padding: 4rem 0; }
+  .hero { padding: 5.5rem 0; }
+  .footer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 900px) {
+  .menu-toggle { display: none; }
+
+  .nav-list {
+    display: flex;
+    flex-direction: row;
+    position: static;
+    background: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    gap: 1.5rem;
+  }
+
+  .hero { padding: 6.5rem 0; }
+  .footer-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1200px) {
+  .container { max-width: 1200px; }
 }
