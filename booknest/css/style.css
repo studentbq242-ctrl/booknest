@@ -1,0 +1,284 @@
+/* 15. CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 16. Түс айнымалылары және қаріптер */
+:root {
+  --primary: #2c5e4f;
+  --primary-dark: #1e4237;
+  --accent: #d97706;
+  --bg-body: #fdfbf7;
+  --bg-light: #f3efe6;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --white: #ffffff;
+  --border: #e5e7eb;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* 17. Типографика */
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-main);
+  background-color: var(--bg-body);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.25rem; }
+p { margin-bottom: 1rem; }
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.section { padding: 4rem 0; }
+.bg-light { background-color: var(--bg-light); }
+
+/* 18 & 26. Sticky Header және Навигация */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 500;
+  padding-bottom: 0.25rem;
+  transition: color 0.2s;
+}
+
+.nav-list a:hover {
+  color: var(--primary);
+}
+
+.nav-list a[aria-current="page"] {
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
+
+/* 19. Hero бөлімі */
+.hero {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: var(--primary-dark); /* Сурет болмаса көрінетін фон */
+  color: var(--white);
+  padding: 6rem 0;
+  text-align: center;
+}
+
+.hero h1 {
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  font-size: 1.125rem;
+}
+
+/* 20. Батырмалар */
+.btn, .btn-outline {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid var(--primary);
+}
+
+.btn {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.btn:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+/* 21 & 22. Кітап карточкалары */
+.cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.card {
+  flex: 1 1 280px;
+  background: var(--white);
+  padding: 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  background-color: #e5e7eb;
+}
+
+.card .author { color: var(--text-muted); font-size: 0.9rem; }
+.card .price { font-weight: 700; font-size: 1.1rem; color: var(--accent); margin-bottom: 1rem; }
+
+/* Тізімдер */
+.features-list, .steps-list { padding-left: 1.5rem; }
+.features-list li, .steps-list li { margin-bottom: 0.75rem; }
+
+.rules-list dt { font-weight: 700; color: var(--primary-dark); margin-top: 1rem; }
+.rules-list dd { margin-left: 1rem; color: var(--text-muted); }
+
+/* 23. Кесте стилі */
+.books-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  margin-top: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.books-table th, .books-table td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.books-table thead {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.books-table tbody tr:nth-child(even) {
+  background-color: var(--bg-light);
+}
+
+/* 24. Форма стилі */
+.contact-form {
+  max-width: 550px;
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.form-group { margin-bottom: 1.25rem; }
+.form-group label { display: block; font-weight: 500; margin-bottom: 0.4rem; }
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(44, 94, 79, 0.15);
+}
+
+.form-group input:invalid:not(:placeholder-shown),
+.form-group textarea:invalid:not(:placeholder-shown) {
+  border-color: #dc2626;
+}
+
+/* 25. Footer (3 баған) */
+.site-footer {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding-top: 3rem;
+  margin-top: 4rem;
+}
+
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+.footer-grid > div { flex: 1 1 250px; }
+.site-footer h3 { color: var(--white); }
+.site-footer ul { list-style: none; }
+.site-footer a { color: #d1d5db; text-decoration: none; }
+.site-footer a:hover { color: var(--white); text-decoration: underline; }
+
+.footer-bottom {
+  text-align: center;
+  padding: 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
