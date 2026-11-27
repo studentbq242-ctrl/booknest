@@ -9,19 +9,181 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .theme-btn {
+      padding: 0.45rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border, #d1d5db);
+      background: var(--white, #ffffff);
+      color: var(--text-main, #1f2937);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .catalog-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin: 1rem 0;
+    }
+    .catalog-controls input,
+    .catalog-controls select {
+      padding: 0.7rem 0.9rem;
+      border-radius: 6px;
+      border: 1px solid var(--border, #d1d5db);
+      background: var(--white, #ffffff);
+      color: var(--text-main, #1f2937);
+      font-size: 1rem;
+    }
+    .catalog-controls input {
+      flex: 1 1 250px;
+    }
+    .genre-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .chip {
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--primary, #2c5e4f);
+      background: transparent;
+      color: var(--primary, #2c5e4f);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .chip.is-active {
+      background: var(--primary, #2c5e4f);
+      color: #ffffff;
+    }
+    .results-count {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-muted, #6b7280);
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      position: relative;
+      background: var(--white, #ffffff);
+      color: var(--text-main, #1f2937);
+      border-radius: 10px;
+      padding: 1.15rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+    .badge-new {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      z-index: 4;
+      background: #d97706;
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+    }
+    .book-media {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      border-radius: 8px;
+      margin-bottom: 0.85rem;
+      background: #e5e7eb;
+    }
+    .book-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .book-genre {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary, #2c5e4f);
+      margin-bottom: 0.25rem;
+    }
+    .card .author {
+      color: var(--text-muted, #6b7280);
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+    }
+    .card .price {
+      font-weight: 700;
+      color: #d97706;
+      margin-top: auto;
+      margin-bottom: 0.8rem;
+    }
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 2rem;
+      background: var(--white, #ffffff);
+      border-radius: 10px;
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 999;
+    }
+    .modal-overlay.is-open {
+      display: flex;
+    }
+    .modal-card {
+      position: relative;
+      background: var(--white, #ffffff);
+      color: var(--text-main, #1f2937);
+      max-width: 560px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 12px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .modal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+      align-items: start;
+    }
+    .modal-grid img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
 
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="logo">📚 BookNest</a>
-
-      <!-- 34. Гамбургер батырмасы (CSS макеті, JS кейін қосылады) -->
-      <button type="button" class="menu-toggle" aria-label="Мәзірді ашу" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
 
       <nav aria-label="Негізгі навигация">
         <ul class="nav-list">
@@ -31,6 +193,15 @@
           <li><a href="contact.html">Байланыс</a></li>
         </ul>
       </nav>
+
+      <div class="header-actions">
+        <button type="button" id="theme-toggle" class="theme-btn" aria-pressed="false">🌙 Қараңғы</button>
+        <button type="button" class="menu-toggle" aria-label="Мәзірді ашу" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -44,48 +215,23 @@
       </div>
     </section>
 
-    <!-- Танымал кітаптар -->
+    <!-- Кітаптар каталогы -->
     <section class="section container">
-      <h2 class="section-title">Танымал кітаптар</h2>
-      <div class="cards-grid">
+      <h2 class="section-title">Кітаптар каталогы</h2>
 
-        <!-- 38 & 39. «Жаңа» белгісі + <picture> және srcset -->
-        <article class="card">
-          <span class="badge-new">Жаңа</span>
-          <picture class="book-media">
-            <source media="(min-width: 600px)" srcset="images/book1.jpg 1x, images/book1.jpg 2x">
-            <img src="images/book1.jpg" alt="Абай жолы кітабының мұқабасы" width="250" height="350">
-          </picture>
-          <h3>Абай жолы</h3>
-          <p class="author">Мұхтар Әуезов</p>
-          <p class="rating" data-rating="5" aria-label="Рейтингі 5-тен 5"></p>
-          <p class="price">4 500 ₸</p>
-          <a href="books.html" class="btn-outline">Толығырақ</a>
-        </article>
-
-        <article class="card">
-          <picture class="book-media">
-            <img src="images/book2.jpg" alt="Атомдық әдеттер кітабының мұқабасы" width="250" height="350">
-          </picture>
-          <h3>Атомдық әдеттер</h3>
-          <p class="author">Джеймс Клир</p>
-          <p class="rating" data-rating="4" aria-label="Рейтингі 5-тен 4"></p>
-          <p class="price">5 200 ₸</p>
-          <a href="books.html" class="btn-outline">Толығырақ</a>
-        </article>
-
-        <article class="card">
-          <picture class="book-media">
-            <img src="images/book3.jpg" alt="Көшпенділер кітабының мұқабасы" width="250" height="350">
-          </picture>
-          <h3>Көшпенділер</h3>
-          <p class="author">Ілияс Есенберлин</p>
-          <p class="rating" data-rating="5" aria-label="Рейтингі 5-тен 5"></p>
-          <p class="price">4 800 ₸</p>
-          <a href="books.html" class="btn-outline">Толығырақ</a>
-        </article>
-
+      <div class="catalog-controls">
+        <input type="search" id="book-search" placeholder="Кітап атауы немесе автор бойынша іздеу..." aria-label="Кітап іздеу">
+        <select id="book-sort" aria-label="Сұрыптау">
+          <option value="default">Сұрыптау: Әдепкі</option>
+          <option value="price-asc">Бағасы: арзаннан қымбатқа</option>
+          <option value="price-desc">Бағасы: қымбаттан арзанға</option>
+          <option value="rating-desc">Рейтингі: жоғарыдан төменге</option>
+        </select>
       </div>
+
+      <div id="genre-chips" class="genre-chips" role="group" aria-label="Жанр бойынша сүзгі"></div>
+      <p id="results-count" class="results-count" aria-live="polite"></p>
+      <div class="cards-grid" id="catalog-grid"></div>
     </section>
 
     <!-- Неге біз? -->
@@ -131,5 +277,228 @@
     </div>
   </footer>
 
+  <!-- Модальды терезе -->
+  <div id="book-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button type="button" id="modal-close" class="modal-close" aria-label="Жабу">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const THEME_KEY = "booknest_theme";
+      let activeGenre = "Барлығы";
+      let searchQuery = "";
+      let sortBy = "default";
+      let lastFocused = null;
+
+      const books = [
+        { id: 1, title: "Абай жолы", author: "Мұхтар Әуезов", genre: "Классика", year: 1942, price: 4500, rating: 5, cover: "images/book1.jpg" },
+        { id: 2, title: "Атомдық әдеттер", author: "Джеймс Клир", genre: "Психология", year: 2018, price: 5200, rating: 4.9, cover: "images/book2.jpg" },
+        { id: 3, title: "Көшпенділер", author: "Ілияс Есенберлин", genre: "Тарих", year: 1976, price: 4800, rating: 4.8, cover: "images/book3.jpg" },
+        { id: 4, title: "1984", author: "Джордж Оруэлл", genre: "Классика", year: 1949, price: 3700, rating: 4.7, cover: "images/book1.jpg" },
+        { id: 5, title: "Сапиенс", author: "Юваль Ной Харари", genre: "Тарих", year: 2011, price: 6100, rating: 4.9, cover: "images/book2.jpg" },
+        { id: 6, title: "Дюна", author: "Фрэнк Герберт", genre: "Фэнтези", year: 1965, price: 5600, rating: 4.6, cover: "images/book3.jpg" },
+        { id: 7, title: "Сақиналар әміршісі", author: "Дж. Р. Р. Толкин", genre: "Фэнтези", year: 1954, price: 6400, rating: 4.9, cover: "images/book1.jpg" },
+        { id: 8, title: "Ойлау, жүйелі және баяу", author: "Даниэль Канеман", genre: "Психология", year: 2011, price: 5400, rating: 4.7, cover: "images/book2.jpg" },
+        { id: 9, title: "Ұшқан ұя", author: "Бауыржан Момышұлы", genre: "Тарих", year: 1974, price: 3900, rating: 4.8, cover: "images/book3.jpg" },
+        { id: 10, title: "Кішкентай ханзада", author: "Антуан де Сент-Экзюпери", genre: "Классика", year: 1943, price: 3200, rating: 4.9, cover: "images/book1.jpg" },
+        { id: 11, title: "Гарри Поттер", author: "Дж. К. Роулинг", genre: "Фэнтези", year: 1997, price: 4300, rating: 4.8, cover: "images/book2.jpg" },
+        { id: 12, title: "Қазақ хандығының тарихы", author: "Мұхтар Мағауин", genre: "Тарих", year: 1992, price: 4900, rating: 4.7, cover: "images/book3.jpg" }
+      ];
+
+      const themeBtn = document.querySelector("#theme-toggle");
+      const menuToggle = document.querySelector(".menu-toggle");
+      const navList = document.querySelector(".nav-list");
+      const searchInput = document.querySelector("#book-search");
+      const sortSelect = document.querySelector("#book-sort");
+      const chipsEl = document.querySelector("#genre-chips");
+      const countEl = document.querySelector("#results-count");
+      const gridEl = document.querySelector("#catalog-grid");
+      const modalEl = document.querySelector("#book-modal");
+      const modalBody = document.querySelector("#modal-body");
+      const modalClose = document.querySelector("#modal-close");
+
+      function applyTheme(mode) {
+        const isDark = mode === "dark";
+        document.body.classList.toggle("dark", isDark);
+        if (themeBtn) {
+          themeBtn.textContent = isDark ? "☀️ Ашық" : "🌙 Қараңғы";
+          themeBtn.setAttribute("aria-pressed", String(isDark));
+        }
+      }
+
+      try {
+        applyTheme(localStorage.getItem(THEME_KEY) || "light");
+      } catch (e) {
+        applyTheme("light");
+      }
+
+      if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+          const next = document.body.classList.contains("dark") ? "light" : "dark";
+          try {
+            localStorage.setItem(THEME_KEY, next);
+          } catch (e) {}
+          applyTheme(next);
+        });
+      }
+
+      if (menuToggle && navList) {
+        menuToggle.addEventListener("click", () => {
+          const open = !navList.classList.contains("is-open");
+          navList.classList.toggle("is-open", open);
+          menuToggle.setAttribute("aria-expanded", String(open));
+        });
+      }
+
+      function renderChips() {
+        if (!chipsEl) return;
+        const genres = ["Барлығы", ...new Set(books.map((b) => b.genre))];
+        chipsEl.innerHTML = genres
+          .map((g) => `<button type="button" class="chip ${g === activeGenre ? "is-active" : ""}" data-genre="${g}">${g}</button>`)
+          .join("");
+
+        chipsEl.querySelectorAll(".chip").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            activeGenre = btn.dataset.genre;
+            renderChips();
+            updateView();
+          });
+        });
+      }
+
+      function getBooks() {
+        const q = searchQuery.trim().toLowerCase();
+        let list = books.filter((b) => {
+          const okGenre = activeGenre === "Барлығы" || b.genre === activeGenre;
+          const okSearch = !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q);
+          return okGenre && okSearch;
+        });
+
+        if (sortBy === "price-asc") list = [...list].sort((a, b) => a.price - b.price);
+        if (sortBy === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
+        if (sortBy === "rating-desc") list = [...list].sort((a, b) => b.rating - a.rating);
+        return list;
+      }
+
+      function renderBooks(list) {
+        if (!gridEl) return;
+        if (countEl) {
+          countEl.textContent = list.length === 0 ? "Кітаптар табылмады" : `${list.length} кітап табылды`;
+        }
+
+        if (list.length === 0) {
+          gridEl.innerHTML = `
+            <div class="empty-state">
+              <p>Іздеу немесе сүзгі бойынша кітап табылмады.</p>
+              <button type="button" class="btn" id="reset-btn">Сүзгілерді тазалау</button>
+            </div>
+          `;
+          const resetBtn = document.querySelector("#reset-btn");
+          if (resetBtn) {
+            resetBtn.addEventListener("click", () => {
+              activeGenre = "Барлығы";
+              searchQuery = "";
+              sortBy = "default";
+              if (searchInput) searchInput.value = "";
+              if (sortSelect) sortSelect.value = "default";
+              renderChips();
+              updateView();
+            });
+          }
+          return;
+        }
+
+        gridEl.innerHTML = list
+          .map(
+            (b) => `
+            <article class="card" tabindex="0" data-id="${b.id}">
+              ${b.year >= 2015 ? '<span class="badge-new">Жаңа</span>' : ""}
+              <div class="book-media">
+                <img src="${b.cover}" alt="${b.title}" onerror="this.style.opacity='0.25'">
+              </div>
+              <span class="book-genre">${b.genre}</span>
+              <h3>${b.title}</h3>
+              <p class="author">${b.author} (${b.year})</p>
+              <p>⭐ ${b.rating} / 5</p>
+              <p class="price">${b.price} ₸</p>
+              <button type="button" class="btn-outline" data-id="${b.id}">Толығырақ</button>
+            </article>
+          `
+          )
+          .join("");
+      }
+
+      function openModal(id, trigger) {
+        const book = books.find((b) => b.id === Number(id));
+        if (!book || !modalEl || !modalBody) return;
+        lastFocused = trigger || document.activeElement;
+        modalBody.innerHTML = `
+          <div class="modal-grid">
+            <img src="${book.cover}" alt="${book.title}" onerror="this.style.opacity='0.25'">
+            <div>
+              <span class="book-genre">${book.genre}</span>
+              <h2>${book.title}</h2>
+              <p><strong>Автор:</strong> ${book.author}</p>
+              <p><strong>Жылы:</strong> ${book.year}</p>
+              <p><strong>Рейтинг:</strong> ⭐ ${book.rating} / 5</p>
+              <p class="price">${book.price} ₸</p>
+            </div>
+          </div>
+        `;
+        modalEl.classList.add("is-open");
+        modalEl.setAttribute("aria-hidden", "false");
+        if (modalClose) modalClose.focus();
+      }
+
+      function closeModal() {
+        if (!modalEl) return;
+        modalEl.classList.remove("is-open");
+        modalEl.setAttribute("aria-hidden", "true");
+        if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+      }
+
+      if (gridEl) {
+        gridEl.addEventListener("click", (e) => {
+          const target = e.target.closest("[data-id]");
+          if (target) openModal(target.dataset.id, e.target.closest("button") || target);
+        });
+      }
+
+      if (modalClose) modalClose.addEventListener("click", closeModal);
+      if (modalEl) {
+        modalEl.addEventListener("click", (e) => {
+          if (e.target === modalEl) closeModal();
+        });
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          searchQuery = e.target.value;
+          updateView();
+        });
+      }
+
+      if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+          sortBy = e.target.value;
+          updateView();
+        });
+      }
+
+      function updateView() {
+        renderBooks(getBooks());
+      }
+
+      renderChips();
+      updateView();
+    })();
+  </script>
 </body>
 </html>
